@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model facility {
+  facility_id    Int         @id(map: "PK__facility__B2E8EAAE088A3502")
+  facility_name  String      @db.NVarChar(255)
+  adress         String      @db.NVarChar(255)
+  founding_date  DateTime    @db.Date
+  sports_kind_id Int
+  sports_kind    sports_kind @relation(fields: [sports_kind_id], references: [sports_kind_id], onDelete: Cascade, map: "FK__facility__sports__2B3F6F97")
+  hall           hall[]
+}
+
+model hall {
+  hall_id      Int       @id(map: "PK__hall__A63DE8CF2A882C0C")
+  facility_id  Int?
+  trainer_id   Int?
+  coating_type String?   @db.NVarChar(255)
+  facility     facility? @relation(fields: [facility_id], references: [facility_id], onDelete: Cascade, map: "FK__hall__facility_i__2E1BDC42")
+  trainer      trainer?  @relation(fields: [trainer_id], references: [trainer_id], onDelete: Cascade, map: "FK__hall__trainer_id__2F10007B")
+}
+
+model sports_kind {
+  sports_kind_id   Int        @id(map: "PK__sports_k__F2C34A910D24108C")
+  sports_kind_name String     @db.NVarChar(255)
+  facility         facility[]
+}
+
+model trainer {
+  trainer_id   Int    @id(map: "PK__trainer__65A4B62996202845")
+  trainer_name String @db.NVarChar(255)
+  experience   String @db.NVarChar(255)
+  category     Int
+  hall         hall[]
+}

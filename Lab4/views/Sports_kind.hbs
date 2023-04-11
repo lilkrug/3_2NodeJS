@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List Kinds</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <h1>List Kinds</h1>
+     <table>
+         <tr><th>KindID </th><th> KindName</th></tr>
+         {{#each sports_kind}}
+            <tr><td>{{this.sports_kind_id}}</td><td>{{this.sports_kind_name}}</td></tr>
+         {{/each}}
+     </table>
+
+
+ <h1>Find one Kind </h1>
+
+   <label>Kind Name</label>
+   <input id="findsports_kind_name" type="text" name="sports_kind_name" /><br><br>
+
+   <input type="submit" onclick="findKind()" value="Find " />
+
+   <h1>Add/Update Kind</h1>
+
+   <label>Kind id</label>
+   <input id="sports_kind_id" type="number" name="sports_kind_id" /><br><br>
+   <label>Kind Name</label>
+   <input id="sports_kind_name" type="text" name="sports_kind_name" /><br><br>
+
+   <input type="submit" onclick="addKind()" value="Add Kind " />
+   <input type="submit" onclick="updKind()" value="Update Kind " />
+     
+     <h1>Delete Kind</h1>
+        <label>KindID</label>
+        <input id="sports_kind_id" type="number" name="sports_kind_id" /><br><br>
+        <input type="submit" onClick="deleteKind()" value="Delete Kind" />
+     <script>
+
+ addKind = () => {
+         let sports_kind_id = document.getElementById("sports_kind_id").value;
+         let sports_kind_name = document.getElementById("sports_kind_name").value;
+    
+
+         let bodyData = {
+            sports_kind_id: parseInt(sports_kind_id),
+            sport_kind_name:sports_kind_name
+         }
+         console.log(`Data: ${bodyData}`);
+         fetch(`http://localhost:3000/sports_kind`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bodyData)
+         });
+         window.location.reload();
+      }
+
+      findKind = () => {
+         let sports_kind_name = document.getElementById("findsports_kind_name").value;
+         window.location.href = `http://localhost:3000/sports_kind/${sports_kind_name}`;
+      }
+
+      updKind = () => {
+         let sports_kind_id = document.getElementById("sports_kind_id").value;
+         let sports_kind_name = document.getElementById("sport_kind_name").value;
+    
+         let bodyData = {
+           
+            sport_kind_name:sports_kind_name
+         }
+         console.log(`Data: ${bodyData}`);
+         fetch(`http://localhost:3000/sports_kind`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bodyData)
+         });
+         window.location.reload();
+      }
+
+
+        deleteKind = () => {
+            let ID = document.getElementById("sports_kind_id").value;
+            console.log(ID);
+            fetch(`http://localhost:3000/sports_kind/${ID}`, {
+                method: 'DELETE',
+            });
+            window.location.reload();
+        }
+     </script>
+</body>
+<html>

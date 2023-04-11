@@ -1,0 +1,44 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+<script type="text/javascript">
+    function add() {
+        alert("вошла")
+        let name = document.getElementById('name');
+        let number = document.getElementById('number');
+        let data = {
+            name: name.value,
+            number: number.value,
+        }
+        fetch(`http://nodejs-3etv.onrender.com/add`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": 'application/json; charset=utf-8',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(data),
+
+        }).then((result) => {
+            if (result.redirected) {
+                window.location = result.url;
+                return;
+            }
+        })
+    }
+</script>
+<div >
+
+    {{> table}}
+
+</div>
+<div>
+    <form method="POST">
+        <input type="text" name="name" maxlength="40 "/>
+        <input type="text" name="number" maxlength="15"/>
+        <input type="submit" class="boton1" formaction ="/add?_method=POST"  value="Add"/>
+    </form>
+
+    {{{canbutton}}}
+</div>
+</body>

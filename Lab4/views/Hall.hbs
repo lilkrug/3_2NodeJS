@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <title>List halls</title>
+   <meta charset="utf-8" />
+</head>
+
+<body>
+   <h1>List Hall</h1>
+   <table>
+      <tr>
+         <th>Hall ID</th>
+         <th>Facility Id</th>
+         <th>Trainer Id</th>
+         <th>Coating Type</th>
+      </tr>
+      {{#each hall}}
+      <tr>
+         <td>{{this.hall_id}}</td>
+         <td>{{this.facility_id}}</td>
+         <td>{{this.trainer_id}}</td>
+         <td>{{this.coating_type}}</td>
+      </tr>
+      {{/each}}
+   </table>
+   <h1>Find one hall </h1>
+
+   <label>hall ID Name</label>
+   <input id="findhall_id" type="number" name="hall_id" /><br><br>
+
+   <input type="submit" onclick="findHall()" value="Find " />
+
+   <h1>Add/Update Hall</h1>
+
+
+   <label>Hall id</label>
+   <input id="hall_id" type="number" name="hall_id" /><br><br>
+   <label>Facility Id</label>
+   <input id="facility_id" type="number" name="facility_id" /><br><br>
+   <label>Trainer Id</label>
+   <input id="trainer_id" type="number" name="trainer_id" /><br><br>
+   <label>Coating_type</label>
+   <input id="coating_type" type="text" name="coating_type" /><br><br>
+   <input type="submit" onclick="addHall()" value="Add Hall " />
+   <input type="submit" onclick="updHall()" value="Update Hall " />
+
+
+
+   <h1>Delete Hall</h1>
+
+   <label>HallID</label>
+   <input id="delhall_id" type="number" name="delhall_id" /><br><br>
+   <input type="submit" onClick="deleteHall()" value="Delete Hall" />
+
+   <script>
+      addHall = () => {
+         let hall_id = document.getElementById("hall_id").value;
+         let facility_id = document.getElementById("facility_id").value;
+         let trainer_id = document.getElementById("trainer_id").value;
+         let coating_type = document.getElementById("coating_type").value;
+
+         let bodyData = {
+            hall_id: parseInt(hall_id),
+            facility_id: parseInt(facility_id),
+            trainer_id: parseInt(trainer_id),
+            coating_type: coating_type
+         }
+         console.log(`Data: ${bodyData}`);
+         fetch(`http://localhost:3000/hall`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bodyData)
+         });
+         window.location.reload();
+      }
+
+      findHall = () => {
+         let hall_id = document.getElementById("findhall_id").value;
+         window.location.href = `http://localhost:3000/hall/${hall_id}`;
+      }
+
+      updHall = () => {
+         let hall_id = document.getElementById("hall_id").value;
+         let facility_id = document.getElementById("facility_id").value;
+         let trainer_id = document.getElementById("trainer_id").value;
+         let coating_type = document.getElementById("coating_type").value;
+
+         let bodyData = {
+            hall_id: parseInt(hall_id),
+            facility_id: parseInt(facility_id),
+            trainer_id: parseInt(trainer_id),
+            coating_type: coating_type
+         }
+         console.log(`Data: ${bodyData}`);
+         fetch(`http://localhost:3000/hall`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bodyData)
+         });
+         window.location.reload();
+      }
+
+      deleteHall = () => {
+         let ID = document.getElementById("delhall_id").value;
+         console.log(ID);
+         fetch(`http://localhost:3000/hall/${ID}`, {
+            method: 'DELETE',
+         });
+         window.location.reload();
+      }
+   </script>
+</body>
+<html>

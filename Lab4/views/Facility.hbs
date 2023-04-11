@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+   <title>List facility</title>
+   <meta charset="utf-8" />
+
+</head>
+
+<body>
+   <h1>List Facility</h1>
+   <table>
+      <tr>
+         <th>Facility ID| </th>
+         <th>Facility name| </th>
+         <th>Kind Id| </th>
+         <th>Adress| </th>
+         <th>Founding date| </th>
+      </tr>
+      {{#each facility}}
+      <tr>
+         <td>{{this.facility_id}}</td>
+         <td>{{this.facility_name}}</td>
+         <td>{{this.sports_kind_id}}</td>
+         <td>{{this.adress}}</td>
+         <td>{{this.founding_date}}</td>
+      </tr>
+      {{/each}}
+   </table>
+
+
+   <h1>Find one Facility </h1>
+
+   <label>facility Name</label>
+   <input id="findfacility_name" type="text" name="findfacility_name" /><br><br>
+   <input type="submit" onclick="findFacility()" value="Find " />
+
+
+   <h1>Add/Update Facility</h1>
+
+
+   <label>Facility id</label>
+   <input id="facility_id" type="number" name="facility_id" /><br><br>
+   <label>Facility Name</label>
+   <input id="addfacility_name" type="text" name="addfacility_name" /><br><br>
+   <label>Adress</label>
+   <input id="adress" type="text" name="adress" /><br><br>
+   <label>Founding date Id</label>
+   <input id="founding_date" type="date" name="founding_date" /><br><br>
+   <label>Sports kind id</label>
+   <input id="sports_kind_id" type="number" name="sports_kind_id" /><br><br>
+   <input type="submit" onclick="addFacility()" value="Add Facility " />
+   <input type="submit" onclick="updFacility()" value="Update Facility " />
+
+
+
+   <h1>Delete Facility</h1>
+
+   <label>FacilityID</label>
+   <input id="delfacility_id" type="number" name="delfacility_id" /><br><br>
+   <input type="submit" onClick="deleteFacility()" value="Delete Facility" />
+
+   <script>
+      addFacility = () => {
+         let facility_id = document.getElementById("facility_id").value;
+         let facility_name = document.getElementById("addfacility_name").value;
+         let adress = document.getElementById("adress").value;
+         let founding_date = document.getElementById("founding_date").value;
+         let sports_kind_id = document.getElementById("sports_kind_id").value;
+
+         console.log(parseInt(sports_kind_id));
+         let bodyData = {
+            facility_id: parseInt(facility_id),
+            facility_name: facility_name,
+            adress: adress,
+            founding_date: founding_date,
+            sports_kind_id: parseInt(sports_kind_id)
+         }
+         console.log(`Data: ${bodyData}`);
+         fetch(`http://localhost:3000/facility`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bodyData)
+         });
+         window.location.reload();
+      }
+
+      findFacility = () => {
+         console.log("find");
+         let facility_name = document.getElementById("findfacility_name").value;
+         window.location.href = `http://localhost:3000/facility/${facility_name}`;
+      }
+      updFacility = () => {
+         let facility_id = document.getElementById("facility_id").value;
+         let facility_name = document.getElementById("addfacility_name").value;
+         let adress = document.getElementById("adress").value;
+         let founding_date = document.getElementById("founding_date").value;
+         let sports_kind_id = document.getElementById("sports_kind_id").value;
+
+         let bodyData = {
+            facility_id: parseInt(facility_id),
+            facility_name: facility_name,
+            adress: adress,
+            founding_date: founding_date,
+            sports_kind_id: parseInt(sports_kind_id)
+         }
+         console.log(`Data: ${bodyData}`);
+         fetch(`http://localhost:3000/facility`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bodyData)
+         });
+         window.location.reload();
+      }
+
+      deleteFacility = () => {
+         let ID = document.getElementById("delfacility_id").value;
+         console.log(ID);
+         fetch(`http://localhost:3000/facility/${ID}`, {
+            method: 'DELETE',
+         });
+         window.location.reload();
+      }
+   </script>
+</body>
+<html>

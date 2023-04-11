@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List Trainer </title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <h1>List Trainer </h1>
+     <table>
+         <tr><th>Trainer ID</th><th>Trainer Name</th><th>Trainer experience</th><th>Trainer category</th></tr>
+         {{#each trainer}}
+            <tr><td>{{this.trainer_id}}</td><td>{{this.trainer_name}}</td><td>{{this.experience}}</td><td>{{this.category}}</td></tr>
+         {{/each}}
+     </table>
+   <h1>Find one Trainer </h1>
+       
+          <label>Trainer Name</label>
+        <input id="trainer_name"  type="text" name="trainer_name" /><br><br>
+        
+        <input type="submit" onclick="findTrainer()" value="Find " />
+
+     <h1>Add Trainer </h1>
+        <label>Trainer id</label>
+        <input  id="trainer_id" type="number" name="trainer_id" /><br><br>
+          <label>Trainer Name</label>
+        <input id="addupd_trainer_name"  type="text" name="trainer_name" /><br><br>
+         <label>Trainer category</label>
+        <input id="trainer_category" type="number" name="trainer_category" /><br><br> 
+        <label>Trainer experience</label>
+        <input id="trainer_experience"  type="text" name="trainer_experience" /><br><br>
+        <input type="submit" onclick="addTrainer()" value="Add Trainer " />
+      <input type="submit" onclick="updTrainer()" value="Update Trainer " />
+        
+         <h1>Delete Trainer </h1>
+        <label>Trainer ID</label>
+        <input id="deltrainer_id" type="number" name="trainer_id" /><br><br>
+        <input type="submit" onClick="deleteTrainer()" value="Delete Trainer " />
+     
+<script>
+         addTrainer = () => {
+            let trainer_id = document.getElementById("trainer_id").value;
+            let trainer_name = document.getElementById("addupd_trainer_name").value;
+            let trainer_category = document.getElementById("trainer_category").value;
+            console.log('trainer_category: ' + trainer_category)
+            let trainer_experience = document.getElementById("trainer_experience").value;
+
+            let bodyData = {
+               trainer_id: parseInt(trainer_id),
+               trainer_name: trainer_name,
+               category: parseInt(trainer_category),
+               experience: trainer_experience
+            }
+            console.log(`Data: ${bodyData}`);
+            fetch(`http://localhost:3000/trainer`, {
+                method: 'POST',
+                headers: {'Content-Type' : 'application/json'},
+                body: JSON.stringify(bodyData)
+            });
+            window.location.reload();
+         }
+         
+         findTrainer = () => {
+            let trainer_name = document.getElementById("trainer_name").value;
+            window.location.href = `http://localhost:3000/trainer/${trainer_name}`;
+         }
+         
+         updTrainer = () => {
+         let trainer_id = document.getElementById("trainer_id").value;
+            let trainer_name = document.getElementById("addupd_trainer_name").value;
+            let trainer_category = document.getElementById("trainer_category").value;
+            let trainer_experience = document.getElementById("trainer_experience").value;
+            let bodyData = {
+                trainer_id: parseInt(trainer_id),
+               trainer_name: trainer_name,
+               category: parseInt(trainer_category),
+               experience: trainer_experience
+            }
+            console.log(`Data: ${bodyData}`);
+            fetch(`http://localhost:3000/trainer`, {
+                method: 'PUT',
+                headers: {'Content-Type' : 'application/json'},
+                body: JSON.stringify(bodyData)
+            });
+            window.location.reload();
+         }
+ 
+
+        deleteTrainer = () => {
+            let ID = document.getElementById("deltrainer_id").value;
+            console.log(ID);
+            fetch(`http://localhost:3000/trainer/${ID}`, {
+                method: 'DELETE',
+            });
+            window.location.reload();
+        }
+     </script>
+</body>
+<html>
